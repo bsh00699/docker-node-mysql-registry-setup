@@ -1,0 +1,32 @@
+{
+  "name": "docker-node-mysql-registry-setup",
+  "version": "1.0.0",
+  "description": "Container Technology Building Services",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec babel-node app.js",
+    "build": "babel . -d build --ignore node_modules --minified",
+    "start": "node build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bsh00699/docker-node-mysql-registry-setup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/runtime": "^7.16.3",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-router": "^10.1.1"
+  }
+}
