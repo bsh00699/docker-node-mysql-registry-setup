@@ -3,10 +3,12 @@ import Router from 'koa-router'
 
 const app = new Koa()
 const router = new Router()
+let visit = 0
 app.use(router.routes(), router.allowedMethods())
 router.get('/api/get', ctx => {
+  visit++
   ctx.body = {
-    data: 'hello nodejs'
+    data: `hello nodejs-${visit}`
   }
 })
 
