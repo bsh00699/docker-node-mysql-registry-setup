@@ -26,6 +26,7 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "knex": "^1.0.2",
     "koa": "^2.13.4",
     "koa-router": "^10.1.1"
   }

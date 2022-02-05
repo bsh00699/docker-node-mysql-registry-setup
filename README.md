@@ -36,6 +36,9 @@ docker run -p [机器端口]:[容器端口] -d --name [运行容器名] [镜像�
 这里由于我这边是macM1环境，拉取镜像的时候需要后面跟上 --platform linux/x86_64
 ```
 docker pull --platform linux/x86_64 mysql
-docker run -d -p 3310:3306 mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql
-
+docker run -d -p 3310:3306 mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql-test mysql
+-d 后台运行
+-p 端口映射
+-e 环境配置 安装启动mysql需要配置密码
+--name 容器名字
 ```
