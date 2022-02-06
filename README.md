@@ -36,9 +36,42 @@ docker run -p [机器端口]:[容器端口] -d --name [运行容器名] [镜像�
 这里由于我这边是macM1环境，拉取镜像的时候需要后面跟上 --platform linux/x86_64
 ```
 docker pull --platform linux/x86_64 mysql
-docker run -d -p 3310:3306 mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql-test mysql
+docker run  --platform linux/amd64 -d -p 3310:3306 mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql-test mysql
+
+或者这样
+docker pull mysql/mysql-server:5.7
+docker run --name mysql -p 3310:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql/mysql-server:5.6
+
 -d 后台运行
 -p 端口映射
 -e 环境配置 安装启动mysql需要配置密码
 --name 容器名字
+```
+进入mysql
+```
+docker exec -it mysql bash
+mysql -u root -p
+create database db;
+show databases db;
+```
+## 容器间通信
+当然你可以用命令打通各个容器间的网络通信，这里我们依赖编写compose-yaml文件
+当然这是最简单的
+```
+version: '1.0'
+services:
+  build: .
+  posts:
+    - '5000:5000'
+  db:
+    image: 'mysql/mysql-server:5.7'
+    expose:
+      - '3310'
+    ports:
+      - '3310:3306'
+    environment:
+       MYSQL_ROOT_PASSWORD: '123456'
+       MYSQL_DATABASE: 'db'
+       MYSQL_USER: 'docker'
+       MYSQL_PASSWORD: '123456'
 ```
