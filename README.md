@@ -39,8 +39,8 @@ docker pull --platform linux/x86_64 mysql
 docker run  --platform linux/amd64 -d -p 3310:3306 mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql-test mysql
 
 或者这样
-docker pull mysql/mysql-server:5.7
-docker run --name mysql -p 3310:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql/mysql-server:5.6
+docker pull mysql/mysql-server
+docker run --name mysql -p 3310:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql/mysql-server
 
 -d 后台运行
 -p 端口映射
@@ -54,6 +54,17 @@ mysql -u root -p
 create database db;
 show databases db;
 ```
+使用workbench连接会报错 Failed to Connect to MySQL at localhost:3306 with user root
+解决如下
+```
+show databases;
+use mysql;
+show tables;
+select Host, User  from user;
+修改user表中的Host:
+update user set Host='%' where User='root';
+flush privileges;
+```
 ## 容器间通信
 当然你可以用命令打通各个容器间的网络通信，这里我们依赖编写compose-yaml文件
 当然这是最简单的
@@ -62,9 +73,9 @@ version: '1.0'
 services:
   build: .
   posts:
-    - '5000:5000'
+    - '5001:5000'
   db:
-    image: 'mysql/mysql-server:5.7'
+    image: 'mysql/mysql-server:latest'
     expose:
       - '3310'
     ports:
@@ -72,6 +83,6 @@ services:
     environment:
        MYSQL_ROOT_PASSWORD: '123456'
        MYSQL_DATABASE: 'db'
-       MYSQL_USER: 'docker'
+       MYSQL_USER: 'root'
        MYSQL_PASSWORD: '123456'
 ```

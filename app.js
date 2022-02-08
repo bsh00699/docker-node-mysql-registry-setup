@@ -1,6 +1,6 @@
 import Koa from 'koa'
 import Router from 'koa-router'
-const db = require('./db')
+import { db } from './db.js'
 
 const app = new Koa()
 const router = new Router()
@@ -12,8 +12,8 @@ router.get('/api/get', ctx => {
     data: `hello nodejs-${visit}`
   }
 })
-router.get('/users', async (req, res) => {
-  const users = await db.select().from('users')
+router.get('/api/users', async (req, res) => {
+  const users = await db.select('name').table('users')
   ctx.body = {
     data: users
   }
