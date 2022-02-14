@@ -86,3 +86,32 @@ services:
        MYSQL_USER: 'root'
        MYSQL_PASSWORD: '123456'
 ```
+## 私有仓库registry
+* linux系统上
+#### 启动服务
+```
+docker run -d -p 5000:5000 --restart=always -v /mnt/registry:var/lib/registry --name registry registry:2
+-v 挂载，机器上的/mnt/registry挂载到容器里面var/lib/registry
+```
+#### 配置域名
+```
+vim /etc/hosts,编辑内容在最后添加【registry服务运行的ip】+ 域名
+比如 xxx.xxx.xxx.xxx  xxx.xxx.com
+```
+#### 配置daemon.json
+* vim /etc/docker/daemon.json, 将registry的地址【域名】+ 【端口】写入insecure-registries配置
+```
+{
+  "insecure-registries": [
+    "上面registry服务配置的域名:5000"
+  ],
+  "live-restore": true
+}
+```
+#### 重启docker服务
+```
+systemctl daemon-reload
+systemctl restart docker
+```
+#### 注：镜像的推送与拉取
+
