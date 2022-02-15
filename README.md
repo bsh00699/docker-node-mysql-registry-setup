@@ -7,7 +7,6 @@ Container Technology Building Services
 3. 运行镜像
 4. 发布镜像
 #### 编写Dockerfile
-* [Dockerfile介绍以及指令详解](https://www.runoob.com/docker/docker-dockerfile.html)
 ```
 FROM node:14
 
@@ -18,6 +17,23 @@ COPY ./ ./
 RUN npm install
 
 CMD ["npm", "run", "dev"]
+```
+Dockerfile基础指令
+* [Dockerfile介绍以及指令详解](https://www.runoob.com/docker/docker-dockerfile.html)
+```
+FROM # 基础镜像 比如centos
+MAINTAINER # 镜像是谁写的 姓名+邮箱
+RUN # 镜像构建时需要运行的命令
+ADD # 添加，比如添加一个tomcat压缩包
+WORKDIR # 镜像的工作目录
+VOLUME # 挂载的目录
+EXPOSE # 指定暴露端口，跟-p一个道理
+RUN # 最终要运行的
+CMD # 指定这个容器启动的时候要运行的命令，只有最后一个会生效，而且可被替代
+ENTRYPOINT # 指定这个容器启动的时候要运行的命令，可以追加命令
+ONBUILD # 当构建一个被继承Dockerfile 这个时候运行ONBUILD指定，触发指令
+COPY # 将文件拷贝到镜像中
+ENV # 构建的时候设置环境变量
 ```
 #### 镜像构建
 ```
@@ -86,8 +102,20 @@ services:
        MYSQL_USER: 'root'
        MYSQL_PASSWORD: '123456'
 ```
+自定义网络(用命令打通各个容器间的网络通信)
+```
+docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 [网络名称]
+  --driver bridge
+  --subnet 192.168.0.0/16 可以支持255*255个网络 192.168.0.2 ~ 192.168.255.254
+  --gateway 192.168.0.1
+```
+接下使用自己创建的网络来启动容器，发现[容器名1]和[容器2]是可以互相ping通的
+```
+docker run -d -P --name [容器名1] --net [自定义网络] [镜像名]
+docker run -d -P --name [容器名2] --net [自定义网络] [镜像名]
+```
 ## 私有仓库registry
-* linux系统上
+* [参考文档](https://docs.docker.com/registry/)
 #### 启动服务
 ```
 docker run -d -p 5000:5000 --restart=always -v /mnt/registry:var/lib/registry --name registry registry:2
