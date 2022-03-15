@@ -141,5 +141,27 @@ vim /etc/hosts,编辑内容在最后添加【registry服务运行的ip】+ 域�
 systemctl daemon-reload
 systemctl restart docker
 ```
-#### 注：镜像的推送与拉取
+#### 镜像的推送与拉取
+* 将准备的镜像上传到registry服务,比如 mysql.tar.gz
+```
+docker load < mysql.tar.gz
+```
+* 镜像打标签
+```
+docker tag [存在镜像] [registry服务运行的ip/域名]:[端口]/[镜像名]:[版本]
+比如mysql
+docker tag mysql xxx.xxx.xxx.xxx:5000/mysql:5.7
+```
+* 推送镜像
+```
+docker push [域名:端口]/[镜像名:版本]
+比如mysql
+docker push xxx.xxx.xxx.xxx:5000/mysql:5.7
+```
+* 拉取镜像
+```
+docker pull [域名:端口]/[镜像名:版本]
+比如mysql
+docker pull xxx.xxx.xxx.xxx:5000/mysql:5.7
+```
 
